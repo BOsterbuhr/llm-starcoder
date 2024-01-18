@@ -10,7 +10,7 @@ data:
     previous_commit: 
     project: 
     repo: 
-    token: null
+    token: 
 environment:
   image:
     cuda: anoophpe/llm-codegen-ft:1.0
