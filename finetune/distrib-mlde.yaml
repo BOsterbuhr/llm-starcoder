@@ -13,6 +13,9 @@ data:
     token: 
 environment:
   environment_variables:
+    - https_proxy=
+    - http_proxy=
+    - NCCL_DEBUG=WARN
     - DET_MASTER_CERT_FILE=noverify
   image:
     cuda: anoophpe/llm-codegen-ft:1.0
