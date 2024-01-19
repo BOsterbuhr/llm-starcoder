@@ -12,6 +12,8 @@ data:
     repo: 
     token: 
 environment:
+  environment_variables:
+    DET_MASTER_CERT_FILE: noverify
   image:
     cuda: anoophpe/llm-codegen-ft:1.0
 resources:
