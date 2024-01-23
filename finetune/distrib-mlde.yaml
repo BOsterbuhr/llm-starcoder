@@ -17,6 +17,7 @@ environment:
     - https_proxy=
     - http_proxy=
     - DET_MASTER_CERT_FILE=noverify
+    - AWS_CA_BUNDLE=
   image:
     cuda: vmtyler/llm-codegen-ft:1.0
 resources:
