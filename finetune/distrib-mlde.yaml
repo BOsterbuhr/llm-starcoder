@@ -26,11 +26,11 @@ resources:
 searcher:
   name: single
   max_length:
-    batches: 1000
+    batches: 500
   metric: eval_loss
 hyperparameters:
   training_arguments:
-    learning_rate: .00001
+    learning_rate: .0001
 entrypoint: >-
   python -m determined.launch.torch_distributed
   python finetune-mlde.py
@@ -40,7 +40,7 @@ entrypoint: >-
   --split
   "train"
   --size_valid_set
-  "10000"
+  "1000"
   --streaming
   --seq_length
   "2048"
