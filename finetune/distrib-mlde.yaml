@@ -1,16 +1,25 @@
 name: starcoder-ft
-workspace: Synopsys
+workspace: PDK Demos
 project: starcoder
 debug: true
 data:
+  data_dir: "/data"
+  download_directory: "/tmp"
+integrations:
   pachyderm:
-    branch: 
-    host: 
-    port: 
-    previous_commit: 
-    project: 
-    repo: 
-    token: 
+    pachd:
+      host: 
+      port: 
+    proxy:
+      scheme: http
+      host: console.pachpe.com
+      port: 80
+    dataset:
+      branch: 
+      commit: 
+      project: 
+      repo: 
+      token:
 environment:
   environment_variables:
     - NCCL_DEBUG=WARN
