@@ -77,4 +77,4 @@ entrypoint: >-
   20
   --eval_freq
   20
-max_restarts: 3
+max_restarts: 1

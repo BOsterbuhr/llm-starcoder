@@ -347,15 +347,15 @@ if __name__ == "__main__":
     os.makedirs(args.output_dir, exist_ok=True)
     
     # download from pachyderm
-    if data_config["pachd"]["host"] is not None:
-        if "," not in data_config["dataset"]["repo"]:
+    if pach_config["pachd"]["host"] is not None:
+        if "," not in pach_config["dataset"]["repo"]:
             raise ValueError("need two comma separated repos for model and dataset (mnodelrepo,datasetrepo)")
         os.makedirs(args.model_path, exist_ok=True)
         os.makedirs(args.dataset_name, exist_ok=True)
         model_repo, data_repo = pach_config["dataset"]["repo"].split(",")
         pach_config["dataset"]["repo"] = model_repo
         model = download_data(data_config, pach_config, args.model_path)
-        data_config["dataset"]["repo"] = data_repo
+        pach_config["dataset"]["repo"] = data_repo
 
         model = download_data(data_config, pach_config, args.dataset_name)
     # dbg- tmp logging
