@@ -127,17 +127,18 @@ def print_trainable_parameters(model):
         f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
     )
 
-def download_data( data_config, data_dir):
+def download_data(data_config, full_config, data_dir):
 
     files = download_pach_repo(
-        data_config["pachyderm"]["host"],
-        data_config["pachyderm"]["port"],
-        data_config["pachyderm"]["repo"],
-        data_config["pachyderm"]["branch"],
-        data_dir,
-        data_config["pachyderm"]["token"],
-        data_config["pachyderm"]["project"],
-        data_config["pachyderm"]["previous_commit"],
+            full_config["integrations"]["pachyderm"]["pachd"]["host"],
+            full_config["integrations"]["pachyderm"]["pachd"]["port"],
+            full_config["integrations"]["pachyderm"]["dataset"]["repo"],
+            full_config["integrations"]["pachyderm"]["dataset"]["branch"],
+            data_dir,
+            full_config["integrations"]["pachyderm"]["dataset"]["token"],
+            data_config["fileset_id"],
+            data_config["datum_id"],
+            data_config["cache_location"],
     )
     print(f"Data dir set to : {data_dir}")
     return [des for src, des in files]
