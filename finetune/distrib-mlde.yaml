@@ -30,16 +30,16 @@ environment:
   image:
     cuda: vmtyler/llm-codegen-ft:1.0
 resources:
-  slots_per_trial: 8
+  slots_per_trial: 4
   resource_pool: gpu-pool
 searcher:
   name: single
   max_length:
-    batches: 500
+    batches: 10
   metric: eval_loss
 hyperparameters:
   training_arguments:
-    learning_rate: .001
+    learning_rate: .0001
 entrypoint: >-
   python -m determined.launch.torch_distributed
   python finetune-mlde.py
