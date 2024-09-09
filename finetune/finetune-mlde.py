@@ -22,6 +22,7 @@ from itertools import chain
 from typing import Any, Dict, Optional, Tuple
 from torch.utils.tensorboard import SummaryWriter
 import determined as det
+from determined.experimental import client
 from determined.pytorch import dsat
 from determined.transformers import DetCallback
 from data import download_pach_repo
@@ -331,7 +332,7 @@ def main(det_callback, args):
 if __name__ == "__main__":
     info = det.get_cluster_info()
     assert info
-    exp = det.client.get_experiment(info.trial.experiment_id)
+    exp = client.get_experiment(info.trial.experiment_id)
     pach_config = exp.get_pachyderm_config()
     hparams = info.trial.hparams
     data_config = info.user_data
