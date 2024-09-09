@@ -127,15 +127,15 @@ def print_trainable_parameters(model):
         f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
     )
 
-def download_data(data_config, full_config, data_dir):
+def download_data(data_config, pach_config, data_dir):
 
     files = download_pach_repo(
-            full_config["integrations"]["pachyderm"]["pachd"]["host"],
-            full_config["integrations"]["pachyderm"]["pachd"]["port"],
-            full_config["integrations"]["pachyderm"]["dataset"]["repo"],
-            full_config["integrations"]["pachyderm"]["dataset"]["branch"],
+            pach_config["pachd"]["host"],
+            pach_config["pachd"]["port"],
+            pach_config["dataset"]["repo"],
+            pach_config["dataset"]["branch"],
             data_dir,
-            full_config["integrations"]["pachyderm"]["dataset"]["token"],
+            pach_config["dataset"]["token"],
             data_config["fileset_id"],
             data_config["datum_id"],
             data_config["cache_location"],
@@ -331,6 +331,8 @@ def main(det_callback, args):
 if __name__ == "__main__":
     info = det.get_cluster_info()
     assert info
+    exp = det.client.get_experiment(info.trial.experiment_id)
+    pach_config = exp.get_pachyderm_config()
     hparams = info.trial.hparams
     data_config = info.user_data
     args = get_args()
@@ -344,17 +346,17 @@ if __name__ == "__main__":
     os.makedirs(args.output_dir, exist_ok=True)
     
     # download from pachyderm
-    if data_config["pachyderm"]["host"] is not None:
-        if "," not in data_config["pachyderm"]["repo"]:
+    if data_config["pachd"]["host"] is not None:
+        if "," not in data_config["dataset"]["repo"]:
             raise ValueError("need two comma separated repos for model and dataset (mnodelrepo,datasetrepo)")
         os.makedirs(args.model_path, exist_ok=True)
         os.makedirs(args.dataset_name, exist_ok=True)
-        model_repo, data_repo = data_config["pachyderm"]["repo"].split(",")
-        data_config["pachyderm"]["repo"] = model_repo
-        model = download_data(data_config, args.model_path)
-        data_config["pachyderm"]["repo"] = data_repo
+        model_repo, data_repo = pach_config["dataset"]["repo"].split(",")
+        pach_config["dataset"]["repo"] = model_repo
+        model = download_data(data_config, pach_config, args.model_path)
+        data_config["dataset"]["repo"] = data_repo
 
-        model = download_data(data_config, args.dataset_name)
+        model = download_data(data_config, pach_config, args.dataset_name)
     # dbg- tmp logging
     log_level = logging.INFO
     logger.setLevel(log_level)
