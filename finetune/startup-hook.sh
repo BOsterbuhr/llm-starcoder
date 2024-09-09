@@ -1,1 +1,1 @@
-pip install pachyderm-sdk
+pip install pachyderm-sdk[cdr]
