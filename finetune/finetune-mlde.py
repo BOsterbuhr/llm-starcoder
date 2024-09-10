@@ -346,18 +346,6 @@ if __name__ == "__main__":
     set_seed(args.seed)
     os.makedirs(args.output_dir, exist_ok=True)
     
-    # download from pachyderm
-    if pach_config["pachd"]["host"] is not None:
-        if "," not in pach_config["dataset"]["repo"]:
-            raise ValueError("need two comma separated repos for model and dataset (mnodelrepo,datasetrepo)")
-        os.makedirs(args.model_path, exist_ok=True)
-        os.makedirs(args.dataset_name, exist_ok=True)
-        model_repo, data_repo = pach_config["dataset"]["repo"].split(",")
-        pach_config["dataset"]["repo"] = model_repo
-        model = download_data(data_config, pach_config, args.model_path)
-        pach_config["dataset"]["repo"] = data_repo
-
-        model = download_data(data_config, pach_config, args.dataset_name)
     # dbg- tmp logging
     log_level = logging.INFO
     logger.setLevel(log_level)
@@ -367,6 +355,21 @@ if __name__ == "__main__":
     transformers.utils.logging.enable_explicit_format()
 
     distributed = det.core.DistributedContext.from_torch_distributed()
+
+    if distributed.get_local_rank() == 0:
+        # download from pachyderm
+        if pach_config["pachd"]["host"] is not None:
+            if "," not in pach_config["dataset"]["repo"]:
+                raise ValueError("need two comma separated repos for model and dataset (mnodelrepo,datasetrepo)")
+            os.makedirs(args.model_path, exist_ok=True)
+            os.makedirs(args.dataset_name, exist_ok=True)
+            model_repo, data_repo = pach_config["dataset"]["repo"].split(",")
+            pach_config["dataset"]["repo"] = model_repo
+            model = download_data(data_config, pach_config, args.model_path)
+            pach_config["dataset"]["repo"] = data_repo
+
+            model = download_data(data_config, pach_config, args.dataset_name)
+    _ = distributed.broadcast_local(None)
 
     with det.core.init(distributed=distributed) as core_context:
         user_data = {
