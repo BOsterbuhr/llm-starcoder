@@ -28,7 +28,7 @@ environment:
     - DET_MASTER_CERT_FILE=noverify
     - AWS_CA_BUNDLE=
   image:
-    cuda: bosterbuhrhpe/llm-codegen-ft:0.1
+    cuda: bosterbuhrhpe/llm-codegen-ft:0.2
 resources:
   slots_per_trial: 4
   resource_pool: gpu-pool
