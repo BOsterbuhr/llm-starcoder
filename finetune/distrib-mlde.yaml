@@ -30,7 +30,7 @@ environment:
   image:
     cuda: bosterbuhrhpe/llm-codegen-ft:0.2
 resources:
-  slots_per_trial: 4
+  slots_per_trial: 1
   resource_pool: gpu-pool
 searcher:
   name: single
@@ -54,7 +54,7 @@ entrypoint: >-
   --seq_length
   "2048"
   --max_steps
-  "100"
+  "10"
   --batch_size
   "1"
   --input_column_name
