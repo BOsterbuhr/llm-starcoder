@@ -323,8 +323,8 @@ def run_training(det_callback, args, train_data, val_data):
 
 
 
-def main(det_callback, args):
-    tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_auth_token=True)
+def main(det_callback, args, final_model_path):
+    tokenizer = AutoTokenizer.from_pretrained(final_model_path, use_auth_token=True)
     train_dataset, eval_dataset = create_datasets(tokenizer, args)
     run_training(det_callback, args, train_dataset, eval_dataset)
 
@@ -381,4 +381,4 @@ if __name__ == "__main__":
 
         det_callback = DetCallback(core_context, args, user_data=user_data)
 
-        main(det_callback, args)
+        main(det_callback, args, final_model_path)
