@@ -29,6 +29,19 @@ environment:
     - AWS_CA_BUNDLE=
   image:
     cuda: bosterbuhrhpe/llm-codegen-ft:0.2
+  pod_spec:
+    apiVersion: v1
+    kind: Pod
+    spec:
+      containers:
+      - name: determined-container
+        volumeMounts:
+        - mountPath: /cache
+          name: cdr-cache
+      volumes:
+      - name: cdr-cache
+        persistentVolumeClaim:
+          claimName: cdr-cache
 resources:
   slots_per_trial: 1
   resource_pool: gpu-pool
