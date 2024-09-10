@@ -8,4 +8,4 @@ torchvision==0.14.1
 torchaudio==0.13.1
 triton>=v1.1.1
 bitsandbytes
-git+https://github.com/huggingface/peft.git
+peft==0.6.0
