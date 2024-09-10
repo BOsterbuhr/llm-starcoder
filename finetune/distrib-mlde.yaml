@@ -56,7 +56,7 @@ hyperparameters:
 entrypoint: >-
   python -m determined.launch.torch_distributed
   python finetune-mlde.py
-  --model_path "/tmp/model"
+  --model_path "/tmp"
   --dataset_name
   "/tmp"
   --split

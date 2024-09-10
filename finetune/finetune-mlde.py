@@ -364,16 +364,16 @@ if __name__ == "__main__":
             os.makedirs(args.model_path, exist_ok=True)
             os.makedirs(args.dataset_name, exist_ok=True)
             model_repo, data_repo = pach_config["dataset"]["repo"].split(",")
-            pach_config["dataset"]["repo"] = model_repo
-            model = download_data(data_config, pach_config, args.model_path)
+            # pach_config["dataset"]["repo"] = model_repo
+            # model = download_data(data_config, pach_config, args.model_path)
             pach_config["dataset"]["repo"] = data_repo
-
             model = download_data(data_config, pach_config, args.dataset_name)
+            
     _ = distributed.broadcast_local(None)
-
+    final_model_path = os.path.join(args.model_path, "pfs", data_config["datum_id"])
     with det.core.init(distributed=distributed) as core_context:
         user_data = {
-            "finetuned_from": args.model_path,
+            "finetuned_from": final_model_path,
             "tasks": "language-modeling",
             "dataset": args.dataset_name,
             "tags": ["language-modeling", "nlp"],
