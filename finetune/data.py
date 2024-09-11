@@ -28,7 +28,7 @@ def download_pach_repo(
     cache_location
 ):
     print(f"Starting to download dataset: {repo}@{branch} --> {root}")
-    datum_path = f"/pfs/{datum_id}/{repo}"
+    datum_path = f"/pfs/{datum_id}"
     print(f"Downloading {datum_path} to {root}")
     if not os.path.exists(root):
         os.makedirs(root)
