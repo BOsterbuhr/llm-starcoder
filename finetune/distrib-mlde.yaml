@@ -58,7 +58,7 @@ entrypoint: >-
   python finetune-mlde.py
   --model_path "/tmp/model"
   --dataset_name
-  "/tmp"
+  "/tmp/model/data"
   --split
   "train"
   --size_valid_set

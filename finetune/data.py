@@ -49,8 +49,8 @@ def download_pach_repo(
     
     # Move the files to the root directory and remove the pfs/datum_id directory
     for file in os.listdir(f"{root}/pfs/{datum_id}"):
-        print(f"Moving {file} from {root}/pfs/{datum_id}/{repo} to {root}")
-        shutil.move(f"{root}/pfs/{datum_id}/{repo}/{file}", f"{root}/{file}")
+        print(f"Moving {file} from {root}/pfs/{datum_id} to {root}")
+        shutil.move(f"{root}/pfs/{datum_id}/{file}", f"{root}/{file}")
 
     return [(os.path.join(root, file), file) for file in os.listdir(root)]
 
