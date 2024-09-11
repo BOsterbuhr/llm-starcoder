@@ -323,8 +323,8 @@ def run_training(det_callback, args, train_data, val_data):
 
 
 
-def main(det_callback, args, final_model_path):
-    tokenizer = AutoTokenizer.from_pretrained(final_model_path, use_auth_token=True)
+def main(det_callback, args):
+    tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_auth_token=True)
     train_dataset, eval_dataset = create_datasets(tokenizer, args)
     run_training(det_callback, args, train_dataset, eval_dataset)
 
@@ -364,16 +364,16 @@ if __name__ == "__main__":
             os.makedirs(args.model_path, exist_ok=True)
             os.makedirs(args.dataset_name, exist_ok=True)
             model_repo, data_repo = pach_config["dataset"]["repo"].split(",")
-            # pach_config["dataset"]["repo"] = model_repo
-            # model = download_data(data_config, pach_config, args.model_path)
-            pach_config["dataset"]["repo"] = data_repo
-            model = download_data(data_config, pach_config, args.dataset_name)
+            pach_config["dataset"]["repo"] = model_repo
+            model = download_data(data_config, pach_config, args.model_path)
+            # pach_config["dataset"]["repo"] = data_repo
+            # model = download_data(data_config, pach_config, args.dataset_name)
             
     _ = distributed.broadcast_local(None)
-    final_model_path = os.path.join(args.model_path, "pfs", data_config["datum_id"])
+
     with det.core.init(distributed=distributed) as core_context:
         user_data = {
-            "finetuned_from": final_model_path,
+            "finetuned_from": args.model_path,
             "tasks": "language-modeling",
             "dataset": args.dataset_name,
             "tags": ["language-modeling", "nlp"],
@@ -381,4 +381,4 @@ if __name__ == "__main__":
 
         det_callback = DetCallback(core_context, args, user_data=user_data)
 
-        main(det_callback, args, final_model_path)
+        main(det_callback, args)
