@@ -28,7 +28,7 @@ environment:
     - DET_MASTER_CERT_FILE=noverify
     - AWS_CA_BUNDLE=
   image:
-    cuda: bosterbuhrhpe/llm-codegen-ft:0.4
+    cuda: bosterbuhrhpe/llm-codegen-ft:0.5
   # pod_spec:
   #   apiVersion: v1
   #   kind: Pod
