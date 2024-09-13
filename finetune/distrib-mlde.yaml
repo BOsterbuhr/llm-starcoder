@@ -13,7 +13,7 @@ integrations:
     proxy:
       scheme: http
       host: console.pachpe.com
-      port: 80
+      port: 443
     dataset:
       branch: 
       commit: 
@@ -43,16 +43,16 @@ environment:
   #       persistentVolumeClaim:
   #         claimName: cdr-cache
 resources:
-  slots_per_trial: 4
+  slots_per_trial: 8
   resource_pool: gpu-pool
 searcher:
   name: single
   max_length:
-    batches: 10
+    batches: 400
   metric: eval_loss
 hyperparameters:
   training_arguments:
-    learning_rate: .0001
+    learning_rate: .00001
 entrypoint: >-
   python -m determined.launch.torch_distributed
   python finetune-mlde.py
@@ -62,12 +62,12 @@ entrypoint: >-
   --split
   "train"
   --size_valid_set
-  "100"
+  "10000"
   --streaming
   --seq_length
   "2048"
   --max_steps
-  "10"
+  "400"
   --batch_size
   "1"
   --input_column_name
@@ -87,7 +87,7 @@ entrypoint: >-
   --log_freq
   20
   --save_freq
-  20
+  50
   --eval_freq
-  20
+  50
 max_restarts: 1
