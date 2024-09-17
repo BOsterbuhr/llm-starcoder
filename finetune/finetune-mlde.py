@@ -131,7 +131,7 @@ def print_trainable_parameters(model):
 def download_data(data_config, pach_config, data_dir):
 
     files = download_pach_repo(
-            "pach-lb-17043d194b958d64.elb.us-east-2.amazonaws.com",
+            "3.23.174.135",
             "443",
             pach_config["dataset"]["repo"],
             pach_config["dataset"]["branch"],
