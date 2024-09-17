@@ -46,7 +46,7 @@ def download_pach_repo(
         os.makedirs(f"{root}/pfs/{datum_id}")
     
     client = pachyderm_sdk.Client(
-        host=pachyderm_host, port=pachyderm_port, auth_token=token
+        host=pachyderm_host, port=pachyderm_port, auth_token=token, tls=True
     )
     
     try:
