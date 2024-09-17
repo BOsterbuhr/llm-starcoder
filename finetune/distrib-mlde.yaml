@@ -29,19 +29,19 @@ environment:
     - AWS_CA_BUNDLE=
   image:
     cuda: bosterbuhrhpe/llm-codegen-ft:0.5
-  pod_spec:
-    apiVersion: v1
-    kind: Pod
-    spec:
-      containers:
-      - name: determined-container
-        volumeMounts:
-        - mountPath: /cache
-          name: efs-cdr-cache
-      volumes:
-      - name: efs-cdr-cache
-        persistentVolumeClaim:
-          claimName: efs-cdr-cache
+  # pod_spec:
+  #   apiVersion: v1
+  #   kind: Pod
+  #   spec:
+  #     containers:
+  #     - name: determined-container
+  #       volumeMounts:
+  #       - mountPath: /cache
+  #         name: efs-cdr-cache
+  #     volumes:
+  #     - name: efs-cdr-cache
+  #       persistentVolumeClaim:
+  #         claimName: efs-cdr-cache
 resources:
   slots_per_trial: 4
   resource_pool: us-east-1
