@@ -22,11 +22,7 @@ integrations:
       token:
 environment:
   environment_variables:
-    - NCCL_DEBUG=WARN
-    - https_proxy=
-    - http_proxy=
     - DET_MASTER_CERT_FILE=noverify
-    - AWS_CA_BUNDLE=
   image:
     cuda: bosterbuhrhpe/llm-codegen-ft:0.5
   # pod_spec:
