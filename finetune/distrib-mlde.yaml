@@ -8,10 +8,10 @@ data:
 integrations:
   pachyderm:
     pachd:
-      host: 
-      port: 
+      host: console.pachpe.com
+      port: 443
     proxy:
-      scheme: http
+      scheme: https
       host: console.pachpe.com
       port: 443
     dataset:
