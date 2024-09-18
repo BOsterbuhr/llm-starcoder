@@ -40,7 +40,7 @@ environment:
   #         claimName: efs-cdr-cache
 resources:
   slots_per_trial: 4
-  resource_pool: us-east-1
+  resource_pool: gpu-pool
 searcher:
   name: single
   max_length:

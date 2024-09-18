@@ -131,8 +131,8 @@ def print_trainable_parameters(model):
 def download_data(data_config, pach_config, data_dir):
 
     files = download_pach_repo(
-            "console.pachpe.com",
-            "443",
+            pach_config["pachd"]["host"],
+            pach_config["pachd"]["port"],
             pach_config["dataset"]["repo"],
             pach_config["dataset"]["branch"],
             data_dir,
