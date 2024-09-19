@@ -9,7 +9,7 @@ import torch
 from accelerate import Accelerator
 import datasets
 from datasets import load_dataset
-from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, set_peft_model_state_dict
+from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, PeftModel
 from torch.utils.data import IterableDataset
 from tqdm import tqdm
 import transformers
@@ -259,7 +259,17 @@ def create_datasets(tokenizer, args):
 
 def run_training(det_callback, args, train_data, val_data):
     print("Loading the model")
-    # disable caching mechanism when using gradient checkpointing
+
+    # Get the latest checkpoint if available
+    info = det.get_cluster_info()
+    latest_checkpoint = info.latest_checkpoint
+    if latest_checkpoint is not None:
+        latest_checkpoint = get_last_checkpoint(args.output_dir)
+        print(f"Resuming from checkpoint: {latest_checkpoint}")
+    else:
+        latest_checkpoint = None
+
+    # Load the base model
     model = AutoModelForCausalLM.from_pretrained(
         args.model_path,
         use_auth_token=True,
@@ -276,14 +286,17 @@ def run_training(det_callback, args, train_data, val_data):
         lora_dropout=args.lora_dropout,
         bias="none",
         task_type="CAUSAL_LM",
-        target_modules = ["c_proj", "c_attn", "q_attn"]
+        target_modules=["c_proj", "c_attn", "q_attn"],
     )
 
-    model = get_peft_model(model, lora_config)
+    if latest_checkpoint is not None:
+        # Load the model with LoRA weights from the checkpoint
+        model = PeftModel.from_pretrained(model, latest_checkpoint)
+    else:
+        # Apply LoRA to the model
+        model = get_peft_model(model, lora_config)
 
     print_trainable_parameters(model)
-
-    train_data.start_iteration = 0
 
     print("Starting main loop")
 
@@ -311,15 +324,17 @@ def run_training(det_callback, args, train_data, val_data):
         ddp_find_unused_parameters=False,
     )
 
-    info = det.get_cluster_info()
-    latest_checkpoint = info.latest_checkpoint
-    if latest_checkpoint is not None:
-        latest_checkpoint = get_last_checkpoint(args.output_dir)
-
-    trainer = Trainer(model=model, args=training_args, train_dataset=train_data, eval_dataset=val_data, callbacks=[SavePeftModelCallback, det_callback])
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=train_data,
+        eval_dataset=val_data,
+        callbacks=[SavePeftModelCallback, det_callback],
+    )
 
     print("Training...")
     trainer.train(resume_from_checkpoint=latest_checkpoint)
+
 
 
 
