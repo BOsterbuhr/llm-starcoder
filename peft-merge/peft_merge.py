@@ -78,15 +78,16 @@ def main():
         required=True,
     )
     args = parser.parse_args()
-    client = create_client()
     if args.input_path_peft is not None:
         chk_path = find_file(args.input_path_peft, 'adapter_config.json')
     else:
+        client = create_client()
         chk_path = download_checkpoint(client, args.experiment_num)
     if chk_path is None:
         print("Could not find a config.json")
         sys.exit(1)
-    merge_peft_adapters(chk_path, args.output_dir, args.model)
+    job_output_dir = f"{args.output_dir}/{os.getenv("PACH_JOB_ID")}"
+    merge_peft_adapters(chk_path, job_output_dir, args.model)
 
 
 
