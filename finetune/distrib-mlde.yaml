@@ -24,7 +24,7 @@ environment:
   environment_variables:
     - DET_MASTER_CERT_FILE=noverify
   image:
-    cuda: bosterbuhrhpe/llm-codegen-ft:0.5
+    cuda: bosterbuhrhpe/llm-codegen-ft:0.6
   pod_spec:
     apiVersion: v1
     kind: Pod
