@@ -1,6 +1,6 @@
 name: starcoder2-ft
 workspace: PDK Demos
-project: starcoder
+project: starcoder2
 debug: true
 data:
   data_dir: "/data"
